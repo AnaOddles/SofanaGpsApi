@@ -6,8 +6,8 @@ namespace SofanaGPSApi.Models
     {
         [BsonId] //Denoates primiary key 
         [BsonRepresentation(BsonType.ObjectId)] //Converts to string for parameters 
-        public string Id { get; set; }
-        public string lon { get; set; }
-        public string lat { get; set; }
+        public string Id { get; set; }      //location ID with getters and setters
+        public string lon { get; set; }     //longitude with getters and setters
+        public string lat { get; set; }     //latitude with getters and setters
     }
 }
