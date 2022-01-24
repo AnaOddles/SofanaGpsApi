@@ -21,11 +21,24 @@ namespace SofanaGPSApi.Services
 
         //Gets all the locations that are stored in database
         public List<Location> Get() =>
-               _locations.Find(location => true).ToList();
+           _locations.Find(location => true).ToList();
 
         //Gets the specific location with the given id
         public Location Get(string id) =>
             _locations.Find<Location>(location => location.Id == id).FirstOrDefault();
+
+        //Grab the last gps coordinate in the databse
+        public Location GetLast()
+        {
+           return _locations.Find(location => true)
+            .SortByDescending(location => location.Id)
+            .Limit(1)
+            .FirstOrDefault();
+        }
+         
+        //_locations.Find().SetSortOrder(SortBy.Ascending("SortByMe"));
+
+        //_locations.Find<Location>(location => true).First();
 
         //Creates a new row in database using the provided location information
         public Location Create(Location location)
