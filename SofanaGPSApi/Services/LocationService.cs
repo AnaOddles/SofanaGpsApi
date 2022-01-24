@@ -21,7 +21,7 @@ namespace SofanaGPSApi.Services
 
         //Gets all the locations that are stored in database
         public List<Location> Get() =>
-           _locations.Find(location => true).ToList();
+           _locations.Find(location => true).SortByDescending(location => location.Id).ToList();
 
         //Gets the specific location with the given id
         public Location Get(string id) =>
