@@ -22,6 +22,11 @@ namespace SofanaGPSApi.Controllers
         public ActionResult<List<Location>> Get() =>
             _locationService.Get();
 
+        //Gets all the last location using location service
+        [HttpGet("{lastLocation}")]
+        public ActionResult<Location> GetLast() =>
+            _locationService.GetLast();
+
         //Gets specific location with location id using location service
         [HttpGet("{id:length(24)}", Name = "GetLocation")]
         public ActionResult<Location> Get(string id)
@@ -29,8 +34,8 @@ namespace SofanaGPSApi.Controllers
             var location = _locationService.Get(id);
 
             //No match throws NotFoundException
-            if (location == null)
-            {
+           if (location == null)
+           {
                 return NotFound();
             }
 
