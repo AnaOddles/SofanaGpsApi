@@ -1,10 +1,12 @@
 ﻿using SofanaGPSApi.Models;
 using SofanaGPSApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using SofanaGPSApi.AuthAttribute;
 
 namespace SofanaGPSApi.Controllers
 {
+    [BasicAuth]
     [Route("api/[controller]")]
     [ApiController]
     public class LocationsController : ControllerBase

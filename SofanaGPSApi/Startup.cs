@@ -32,12 +32,15 @@ namespace SofanaGPSApi
             //requires using Microsft.Extensions.Options 
             services.Configure<SofanaGPSDatabaseSettings>(
                 Configuration.GetSection(nameof(SofanaGPSDatabaseSettings)));
-
+            
             services.AddSingleton<ISofanaGPSDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<SofanaGPSDatabaseSettings>>().Value);
 
             //Registered LocationService as a singleton 
             services.AddSingleton<LocationService>();
+
+            //Registered UserService as a singleton
+            services.AddSingleton<UserService>();
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.UseMemberCasing());
