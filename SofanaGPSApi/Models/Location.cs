@@ -11,6 +11,9 @@ namespace SofanaGPSApi.Models
         public string lat { get; set; }     //latitude with getters and setters
         public int cartId { get; set; }     //cartId for keeping track of which golf cart locaiton belongs to
         public string dateTime { get; set; } //location dateTime 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9ebdbeca35a2d1448d62ca178dbd1a327c27168b
     }
 }
