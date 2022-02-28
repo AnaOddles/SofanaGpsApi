@@ -3,7 +3,6 @@ using SofanaGPSApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using SofanaGPSApi.AuthAttribute;
-
 namespace SofanaGPSApi.Controllers
 {
     [BasicAuth]
@@ -30,10 +29,11 @@ namespace SofanaGPSApi.Controllers
             _locationService.GetLast();
 
         //Gets all the locations for a cartId 
-        [HttpGet("{cartId:int}" , Name ="GetLocationWithCartId")]
-        public ActionResult <List<Location>> GetAllWithCartId(int cartId) =>
-            _locationService.GetAllWithCartId(cartId);
+        [HttpGet("cartId/{cartId:int}")]
+        public ActionResult<List<Location>> GetAllWithCartId(int cartId) =>
+             _locationService.GetAllWithCartId(cartId);
 
+        
         //Gets specific location with location id using location service
         [HttpGet("{id:length(24)}", Name = "GetLocation")]
         public ActionResult<Location> Get(string id)

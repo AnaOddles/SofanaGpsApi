@@ -1,6 +1,6 @@
 ﻿using SofanaGPSApi.Models;
 using MongoDB.Driver;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SofanaGPSApi.Services
@@ -29,7 +29,9 @@ namespace SofanaGPSApi.Services
 
         //Get all the specific location with a given cartId 
         public List<Location> GetAllWithCartId(int cartId) =>
-            _locations.Find(location => true).SortByDescending(Location => Location.cartId).ToList();
+             _locations.Find(location => location.cartId == cartId).SortByDescending(location => location.Id).ToList();
+
+        
 
         //Grab the last gps coordinate in the databse
         public Location GetLast()
