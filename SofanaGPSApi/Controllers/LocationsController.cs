@@ -23,10 +23,17 @@ namespace SofanaGPSApi.Controllers
         public ActionResult<List<Location>> Get() =>
             _locationService.Get();
 
-        //Gets all the last location using location service
+        //Gets all the last location of both golf carts using location service
         [HttpGet("{lastLocation}")]
-        public ActionResult<Location> GetLast() =>
-            _locationService.GetLast();
+        public ActionResult<List<Location>>GetLast() {
+            List<Location> locations = new List<Location>();
+
+            //Use location service for both golf carts
+            locations.Add(_locationService.GetLastWithCartId(0));
+            locations.Add(_locationService.GetLastWithCartId(1));
+            return locations;
+        }
+            
 
         //Gets all the locations for a cartId 
         [HttpGet("cartId/{cartId:int}")]
