@@ -27,6 +27,10 @@ namespace SofanaGPSApi.Services
         public Location Get(string id) =>
             _locations.Find<Location>(location => location.Id == id).FirstOrDefault();
 
+        //Get all the specific location with a given cartId 
+        public List<Location> GetAllWithCartId(int cartId) =>
+            _locations.Find(location => true).SortByDescending(Location => Location.cartId).ToList();
+
         //Grab the last gps coordinate in the databse
         public Location GetLast()
         {
