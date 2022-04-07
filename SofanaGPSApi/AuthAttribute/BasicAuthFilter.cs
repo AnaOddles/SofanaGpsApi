@@ -1,24 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using SofanaGPSApi.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SofanaGPSApi.AuthAttribute
 {
     public class BasicAuthorizeFilter : IAuthorizationFilter
     {
         //Inject our user service 
-        private readonly UserService _userService; 
+        private readonly UserService _userService;
+        private readonly ILogger<BasicAuthAttribute> _logger;
 
         //Constructor - passing in the UserService DI
-        public BasicAuthorizeFilter(UserService userService)
+        public BasicAuthorizeFilter(UserService userService, ILogger<BasicAuthAttribute> logger)
         {
             _userService = userService;
-
+            _logger = logger;
         }
 
         //Performs the actaul authentication for request
@@ -55,7 +55,6 @@ namespace SofanaGPSApi.AuthAttribute
             // Return unauthorized
             context.Result = new UnauthorizedResult();
 
-
         }
 
         //Helper method to check credentials for authentication
@@ -66,11 +65,11 @@ namespace SofanaGPSApi.AuthAttribute
 
             //If passed in username does not exist or password is not correct
             if (encryptedPassword != null && BCrypt.Net.BCrypt.Verify(password, encryptedPassword)) {
-                Console.WriteLine("Passed Authentication");
+                _logger.LogInformation("Authentication passed for {0}", username);
                 return true;
             }
 
-            Console.WriteLine("Failed Authentication");
+            _logger.LogInformation("Authentication failed for {0}", username);
             return false;
         }       
     }
