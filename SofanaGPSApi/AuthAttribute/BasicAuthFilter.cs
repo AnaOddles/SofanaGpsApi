@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using SofanaGPSApi.Services;
+using SofanaGPSApi.Models;
 using System;
 using System.Text;
 
@@ -59,14 +60,18 @@ namespace SofanaGPSApi.AuthAttribute
 
         //Helper method to check credentials for authentication
         protected bool IsAuthorized(string username, string password)
-        {   
-            //Grab the user with the password  
-            string encryptedPassword = _userService.Get(username).password;
+        {
+            //Grab the user if exists with the password  
+            User user = _userService.Get(username);
 
             //If passed in username does not exist or password is not correct
-            if (encryptedPassword != null && BCrypt.Net.BCrypt.Verify(password, encryptedPassword)) {
-                _logger.LogInformation("Authentication passed for {0}", username);
-                return true;
+            if (user != null) {
+                string encryptedPassword = user.password;
+                if (BCrypt.Net.BCrypt.Verify(password, encryptedPassword))
+                {
+                    _logger.LogInformation("Authentication passed for {0}", username);
+                    return true;
+                }
             }
 
             _logger.LogInformation("Authentication failed for {0}", username);
