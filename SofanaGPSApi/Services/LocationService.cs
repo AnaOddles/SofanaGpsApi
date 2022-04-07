@@ -2,6 +2,8 @@
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace SofanaGPSApi.Services
 {
@@ -49,10 +51,6 @@ namespace SofanaGPSApi.Services
             .FirstOrDefault();
         }
          
-        //_locations.Find().SetSortOrder(SortBy.Ascending("SortByMe"));
-
-        //_locations.Find<Location>(location => true).First();
-
         //Creates a new row in database using the provided location information
         public Location Create(Location location)
         {
