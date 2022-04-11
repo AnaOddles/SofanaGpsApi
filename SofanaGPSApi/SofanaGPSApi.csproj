@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>03596f4e-3bb2-415a-8dce-c61897062a59</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,4 +24,9 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <None Remove="xunit" />
+    <None Remove="Microsoft.NET.Test.Sdk" />
+    <None Remove="xunit.runner.utility" />
+  </ItemGroup>
 </Project>

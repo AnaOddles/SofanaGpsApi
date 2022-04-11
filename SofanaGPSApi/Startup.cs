@@ -30,7 +30,7 @@ namespace SofanaGPSApi
                 sp.GetRequiredService<IOptions<SofanaGPSDatabaseSettings>>().Value);
 
             //Registered LocationService as a singleton 
-            services.AddSingleton<LocationService>();
+            services.AddSingleton<ILocationService, LocationService>();
 
             //Registered UserService as a singleton
             services.AddSingleton<UserService>();

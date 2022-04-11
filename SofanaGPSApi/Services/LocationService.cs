@@ -2,12 +2,11 @@
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Logging;
-using NLog.Web;
+using System.Threading.Tasks;
 
 namespace SofanaGPSApi.Services
 {
-    public class LocationService
+    public class LocationService : ILocationService
     {
         private readonly IMongoCollection<Location> _locations;
 
@@ -22,40 +21,52 @@ namespace SofanaGPSApi.Services
         }
 
         //Gets all the locations that are stored in database
-        public List<Location> Get() =>
-           _locations.Find(location => true).SortByDescending(location => location.Id).ToList();
-
-        //Gets the specific location with the given id
-        public Location Get(string id) =>
-            _locations.Find<Location>(location => location.Id == id).FirstOrDefault();
-
-        //Get all the specific location with a given cartId 
-        public List<Location> GetAllWithCartId(int cartId) =>
-             _locations.Find(location => location.cartId == cartId).SortByDescending(location => location.Id).ToList();
-
-        //Grab the last gps coordinate in the database for a cartId
-        public Location GetLastWithCartId(int cartId)
+        public async Task<List<Location>> Get()
         {
-            return _locations.Find(location => location.cartId == cartId)
-             .SortByDescending(location => location.Id)
-             .Limit(1)
-             .FirstOrDefault();
+            return await _locations.Find(location => true).SortByDescending(location => location.Id).ToListAsync();
         }
 
-        //Grab the last gps coordinate in the databse
-        public Location GetLast()
+        //Gets the specific location with the given id
+        public async Task<List<Location>> Get(string id) =>
+            await _locations.Find<Location>(location => location.Id == id).Limit(1).ToListAsync();
+
+        //Get all the specific location with a given cartId 
+        public async Task<List<Location>> GetAllWithCartId(int cartId) =>
+             await _locations.Find(location => location.cartId == cartId).SortByDescending(location => location.Id).ToListAsync();
+
+        //Grab the last gps coordinate in the database for a cartId
+        public async Task<List<Location>> GetLastWithCartId(int cartId)
         {
-           return _locations.Find(location => true)
-            .SortByDescending(location => location.Id)
-            .Limit(1)
-            .FirstOrDefault();
+            return await _locations.Find(location => location.cartId == cartId)
+             .SortByDescending(location => location.Id)
+             .Limit(1)
+             .ToListAsync();
+        }
+
+        //Grab the last gps coordinates in the database for all carts
+        public async Task<List<Location>> GetLastCoordinates()
+        {
+            //Use location service for both golf carts
+            List<Location> locations = await this.GetLastWithCartId(0);
+            locations.AddRange(await this.GetLastWithCartId(1));
+            return locations;
+        }
+
+        //Grab the last single gps coordinate in the databse
+        public async Task<List<Location>> GetLast()
+        {
+           return await _locations.Find(location => true).SortByDescending(location => location.Id).Limit(1).ToListAsync();
         }
          
         //Creates a new row in database using the provided location information
-        public Location Create(Location location)
+        public async Task<List<Location>> Create(Location location)
         {
-            _locations.InsertOne(location);
-            return location;
+            List<Location> locations = new List<Location>
+            {
+                location
+            };
+            await _locations.InsertOneAsync(location);
+            return locations;
         }
 
         //Updates the row with given id in database using the provided location information
@@ -69,6 +80,10 @@ namespace SofanaGPSApi.Services
         //Deletes a row from database using the given location id
         public void Remove(string id) =>
            _locations.DeleteOne(location => location.Id == id);
-                
+
+        public void Remove(int id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

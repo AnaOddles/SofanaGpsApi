@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using SofanaGPSApi.AuthAttribute;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SofanaGPSApi.Controllers
 {
@@ -13,42 +15,57 @@ namespace SofanaGPSApi.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        private readonly LocationService _locationService;
+        private readonly ILocationService _locationService;
         private readonly ILogger<LocationsController> _logger;
 
-        //Constructor - Initializes the location service 
-        public LocationsController(LocationService locationService, ILogger<LocationsController> logger) {
+        //Constructor - Initializes the location service
+        [ActivatorUtilitiesConstructor]
+        public LocationsController(ILocationService locationService, ILogger<LocationsController> logger) {
             _locationService = locationService;
             _logger = logger;
         }
 
+        public LocationsController(ILocationService locationService)
+        {
+            _locationService = locationService;
+        }
+
         //Gets all the locations using location service
         [HttpGet]
-        public ActionResult<List<Location>> Get() {
-            _logger.LogInformation("/locations - All Locations grabbed");
-            return _locationService.Get();
+        public async Task<IActionResult> Get() {
+            if(_logger != null)
+                _logger.LogInformation("/locations - All Locations grabbed");
+
+            var result = await _locationService.Get();
+            if (result.Count == 0)
+                return NoContent();
+            return Ok(result);
         }
             
         //Gets all the last location of both golf carts using location service
         [HttpGet("{lastLocation}")]
-        public ActionResult<List<Location>>GetLast() {
-            List<Location> locations = new List<Location>();
+        public async Task<IActionResult> GetLast() {
 
             //Use location service for both golf carts
-            locations.Add(_locationService.GetLastWithCartId(0));
-            locations.Add(_locationService.GetLastWithCartId(1));
+            List<Location> locations = await _locationService.GetLastCoordinates();
 
-            string jsonObject = JsonConvert.SerializeObject(locations);
-            _logger.LogInformation("/lastLocation - last locations grabbed - {0}", jsonObject);
+            if (_logger != null) {
+                string jsonObject = JsonConvert.SerializeObject(locations);
+                _logger.LogInformation("/lastLocation - last locations grabbed - {0}", jsonObject);
+            }
 
-            return locations;
+            if (locations.Count == 0)
+                return NoContent();
+
+            return Ok(locations);
         }
 
         //Gets all the locations for a cartId 
         [HttpGet("cartId/{cartId:int}")]
-        public ActionResult<List<Location>> GetAllWithCartId(int cartId) {
-            _logger.LogInformation("/cardId/:cartId - locations with {0}- cartId grabbed", cartId);
-            List<Location> locations =  _locationService.GetAllWithCartId(cartId);
+        public async Task<IActionResult> GetAllWithCartId(int cartId) { 
+            if(_logger != null)
+                _logger.LogInformation("/cardId/:cartId - locations with {0}- cartId grabbed", cartId);
+            List<Location> locations =  await _locationService.GetAllWithCartId(cartId);
 
             //No match throws NotFoundException
             if (locations == null)
@@ -57,15 +74,17 @@ namespace SofanaGPSApi.Controllers
                 return NotFound();
             }
 
-            return locations;
+            return Ok(locations);
         }
              
         //Gets specific location with location id using location service
         [HttpGet("{id:length(24)}", Name = "GetLocation")]
-        public ActionResult<Location> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            _logger.LogInformation("/location/:id - location with {0}- locationId grabbed", id);
-            var location = _locationService.Get(id);
+            if(_logger != null)
+                _logger.LogInformation("/location/:id - location with {0}- locationId grabbed", id);
+
+            var location = await _locationService.Get(id);
 
             //No match throws NotFoundException
            if (location == null)
@@ -74,17 +93,19 @@ namespace SofanaGPSApi.Controllers
                 return NotFound();
            }
 
-            return location;
+            return Ok(location);
         }
 
         //Passes location information to the location service to insert a new row to database
         [HttpPost]
-        public ActionResult<Location> Create(Location location)
+        public async Task<IActionResult> Create(Location location)
         {
-            string jsonObject = JsonConvert.SerializeObject(location);
-            _logger.LogInformation("/location/ - adding location - {0}", jsonObject);
-            _locationService.Create(location);
-            return CreatedAtRoute("GetLocation", new { id = location.Id.ToString() }, location);
+            if (_logger != null) {
+                string jsonObject = JsonConvert.SerializeObject(location);
+                _logger.LogInformation("/location/ - adding location - {0}", jsonObject);
+            }
+            await _locationService.Create(location);
+            return Ok(CreatedAtRoute("GetLocation", new { id = location.Id.ToString() }, location));
         }
 
         //Passes location information with location id to the location service to update the specified location information
