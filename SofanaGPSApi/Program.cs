@@ -44,4 +44,4 @@ namespace SofanaGPSApi
                     })
                     .UseNLog();  // NLog: Setup NLog for Dependency injection
         }
-    }
+}

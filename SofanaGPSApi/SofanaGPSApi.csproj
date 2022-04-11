@@ -23,4 +23,9 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <None Remove="xunit" />
+    <None Remove="Microsoft.NET.Test.Sdk" />
+    <None Remove="xunit.runner.utility" />
+  </ItemGroup>
 </Project>
