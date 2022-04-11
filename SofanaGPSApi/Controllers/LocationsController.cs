@@ -137,46 +137,5 @@ namespace SofanaGPSApi.Controllers
             await _locationService.Create(location);
             return Ok(CreatedAtRoute("GetLocation", new { id = location.Id.ToString() }, location));
         }
-
-        /// <summary>
-        /// Passes location information with location id to the location service to update the specified location information
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="locationIn"></param>
-        /// <returns>IActionResult</returns>
-        [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Location locationIn)
-        {
-            _logger.LogInformation("/location/ - updating with id - {0}", id);
-            var location = _locationService.Get(id);
-            
-            //No match throws NotFoundException
-            if (location == null)
-            {
-                _logger.LogInformation("/location/:id - no location with {0}- id grabbed", id);
-                return NotFound();
-            }
-
-            _locationService.Update(id, locationIn);
-            return NoContent();
-        }
-
-        //Passes the location id to the location service to remove the specified location row from database
-        [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
-        {
-            _logger.LogInformation("/location/ - deleting with id - {0}", id);
-            var location = _locationService.Get(id);
-
-            //No match throws NotFoundException
-            if (location == null)
-            {
-                _logger.LogInformation("/location/:id - no location with {0}- id grabbed", id);
-                return NotFound();
-            }
-            _locationService.Remove(location.Id);
-
-            return NoContent();
-        }
      }
 }

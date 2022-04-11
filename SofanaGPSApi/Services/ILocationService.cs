@@ -18,8 +18,5 @@ namespace SofanaGPSApi.Services
         public Task<List<Location>> GetLast();
         public Task<List<Location>> GetLastCoordinates();
         public Task<List<Location>> Create(Location location);
-        public void Update(string id, Location locationIn);
-        public void Remove(string id);
-        void Remove(int id);
     }
 }

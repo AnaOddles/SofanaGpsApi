@@ -99,22 +99,5 @@ namespace SofanaGPSApi.Services
             await _locations.InsertOneAsync(location);
             return locations;
         }
-
-        //Updates the row with given id in database using the provided location information
-        public void Update(string id, Location locationIn) =>
-            _locations.ReplaceOne(location => location.Id == id, locationIn);
-
-        //Deletes a row from database using the given location information
-        public void Remove(Location locationIn) =>
-             _locations.DeleteOne(location => location.Id == locationIn.Id);
-
-        //Deletes a row from database using the given location id
-        public void Remove(string id) =>
-           _locations.DeleteOne(location => location.Id == id);
-
-        public void Remove(int id)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
