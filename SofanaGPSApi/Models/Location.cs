@@ -2,6 +2,9 @@
 using MongoDB.Bson.Serialization.Attributes;
 namespace SofanaGPSApi.Models
 {
+    /// <summary>
+    /// Entity Model for Location
+    /// </summary>
     public class Location
     {
         [BsonId] //Denoates primiary key 

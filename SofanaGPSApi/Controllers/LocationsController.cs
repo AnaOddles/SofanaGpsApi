@@ -13,24 +13,39 @@ namespace SofanaGPSApi.Controllers
     [BasicAuth]
     [Route("api/[controller]")]
     [ApiController]
+    /// <summary>
+    /// Exposes Locaiton Api endpoints
+    /// </summary>
     public class LocationsController : ControllerBase
     {
         private readonly ILocationService _locationService;
         private readonly ILogger<LocationsController> _logger;
 
-        //Constructor - Initializes the location service
+        /// <summary>
+        /// Constructor - Initializes the location service
+        /// </summary>
+        /// <param name="locationService"></param>
+        /// <param name="logger"></param>
         [ActivatorUtilitiesConstructor]
         public LocationsController(ILocationService locationService, ILogger<LocationsController> logger) {
             _locationService = locationService;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Constructor - Initializes the location service
+        /// Used for unit testing
+        /// </summary>
+        /// <param name="locationService"></param>
         public LocationsController(ILocationService locationService)
         {
             _locationService = locationService;
         }
 
-        //Gets all the locations using location service
+        /// <summary>
+        /// Gets all the locations using location service
+        /// </summary>
+        /// <returns>IActionResult</returns>
         [HttpGet]
         public async Task<IActionResult> Get() {
             if(_logger != null)
@@ -41,8 +56,11 @@ namespace SofanaGPSApi.Controllers
                 return NoContent();
             return Ok(result);
         }
-            
-        //Gets all the last location of both golf carts using location service
+
+        /// <summary>
+        /// Gets all the last location of both golf carts using location service
+        /// </summary>
+        /// <returns>IActionResult</returns>
         [HttpGet("{lastLocation}")]
         public async Task<IActionResult> GetLast() {
 
@@ -60,7 +78,11 @@ namespace SofanaGPSApi.Controllers
             return Ok(locations);
         }
 
-        //Gets all the locations for a cartId 
+        /// <summary>
+        /// Gets all the locations for a cartId 
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns>IActionResult</returns>
         [HttpGet("cartId/{cartId:int}")]
         public async Task<IActionResult> GetAllWithCartId(int cartId) { 
             if(_logger != null)
@@ -76,8 +98,12 @@ namespace SofanaGPSApi.Controllers
 
             return Ok(locations);
         }
-             
-        //Gets specific location with location id using location service
+
+        /// <summary>
+        /// Gets specific location with location id using location service
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>IActionResult</returns>
         [HttpGet("{id:length(24)}", Name = "GetLocation")]
         public async Task<IActionResult> Get(string id)
         {
@@ -96,7 +122,11 @@ namespace SofanaGPSApi.Controllers
             return Ok(location);
         }
 
-        //Passes location information to the location service to insert a new row to database
+        /// <summary>
+        /// Passes location information to the location service to insert a new row to database
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns>IActionResult</returns>
         [HttpPost]
         public async Task<IActionResult> Create(Location location)
         {
@@ -108,7 +138,12 @@ namespace SofanaGPSApi.Controllers
             return Ok(CreatedAtRoute("GetLocation", new { id = location.Id.ToString() }, location));
         }
 
-        //Passes location information with location id to the location service to update the specified location information
+        /// <summary>
+        /// Passes location information with location id to the location service to update the specified location information
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="locationIn"></param>
+        /// <returns>IActionResult</returns>
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, Location locationIn)
         {

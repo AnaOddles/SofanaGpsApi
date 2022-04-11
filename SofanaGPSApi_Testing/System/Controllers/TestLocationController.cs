@@ -13,9 +13,16 @@ using Microsoft.Extensions.Logging;
 
 namespace SofanaGPApi_Testing.System.Controllers
 {
+    /// <summary>
+    /// Test class for LocationController functionality
+    /// </summary>
     public class TestLocationController
     {
-        [Fact]              
+        /// <summary>
+        /// Integration test for 200 status Get() endpoint
+        /// </summary>
+        /// <returns>async Task</returns>
+        [Fact]
         public async Task Get_ShouldReturn200Status()
         {
             // Arrange
@@ -30,6 +37,10 @@ namespace SofanaGPApi_Testing.System.Controllers
             result.StatusCode.Should().Be(200);
         }
 
+        /// <summary>
+        /// Integration test for 204 status Get() endpoint
+        /// </summary>
+        /// <returns>async Task</returns>
         [Fact]
         public async Task Get_ShouldReturn204NoContentStatus()
         {
@@ -47,6 +58,10 @@ namespace SofanaGPApi_Testing.System.Controllers
 
         }
 
+        /// <summary>
+        /// Integration test for 200 status GetLast() endpoint
+        /// </summary>
+        /// <returns>async Task</returns>
         [Fact]
         public async Task GetLast_ShouldReturn200Status()
         {
@@ -62,6 +77,11 @@ namespace SofanaGPApi_Testing.System.Controllers
             result.StatusCode.Should().Be(200);
         }
 
+        /// <summary>
+        /// Integation test for 200 status GetAllWithCartId(int cartId) endpoint
+        /// </summary
+        /// <param name="cartId"></param>
+        /// <returns>async Task</returns>
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
@@ -79,6 +99,11 @@ namespace SofanaGPApi_Testing.System.Controllers
             result.StatusCode.Should().Be(200);
         }
 
+        /// <summary>
+        /// Integration test for 200 status GetWithCartId(string id) endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>async Task</returns>
         [Theory]
         [InlineData("624f77b47f7eee1c98bee1cf")]
         [InlineData("624e2e9ecc1c67f0c0cef4cd")]
@@ -96,6 +121,10 @@ namespace SofanaGPApi_Testing.System.Controllers
             result.StatusCode.Should().Be(200);
         }
 
+        /// <summary>
+        /// Integration test for Create() endpoint
+        /// </summary>
+        /// <returns>async Task</returns>
         [Fact]
         public async Task Create_ShouldCall_ILocationService_Create_AtleastOnce()
         {

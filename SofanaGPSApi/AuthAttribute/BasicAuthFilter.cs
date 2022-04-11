@@ -9,25 +9,36 @@ using System.Text;
 
 namespace SofanaGPSApi.AuthAttribute
 {
+    /// <summary>
+    /// BasicAuthFilter used for annotiating security on API Controller
+    /// </summary>
     public class BasicAuthorizeFilter : IAuthorizationFilter
     {
         //Inject our user service 
         private readonly UserService _userService;
         private readonly ILogger<BasicAuthAttribute> _logger;
 
-        //Constructor - passing in the UserService DI
+        /// <summary>
+        /// Constructor - passing in the UserService DI
+        /// </summary>
+        /// <param name="userService"></param>
+        /// <param name="logger"></param>
         public BasicAuthorizeFilter(UserService userService, ILogger<BasicAuthAttribute> logger)
         {
             _userService = userService;
             _logger = logger;
         }
 
-        //Performs the actaul authentication for request
+
+        /// <summary>
+        /// //Performs the actaul authentication for request
+        /// </summary>
+        /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             // Grab the auth header from the request
             string authHeader = context.HttpContext.Request.Headers["Authorization"];
-            
+
             // If - valid auth header was passed in
             if (authHeader != null && authHeader.StartsWith("Basic "))
             {
@@ -58,7 +69,12 @@ namespace SofanaGPSApi.AuthAttribute
 
         }
 
-        //Helper method to check credentials for authentication
+        /// <summary>
+        /// Helper method to check credentials for authentication
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>bool"</returns>
         protected bool IsAuthorized(string username, string password)
         {
             //Grab the user if exists with the password  

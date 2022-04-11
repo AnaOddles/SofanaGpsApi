@@ -5,8 +5,12 @@ using SofanaGPSApi.Models;
 
 namespace SofanaGPSApi.Services
 {
+    /// <summary>
+    /// Interface for the methods for LocationService
+    /// </summary>
     public interface ILocationService
     {
+        
         public Task<List<Location>> Get();
         public Task<List<Location>> Get(String id);
         public Task<List<Location>> GetAllWithCartId(int cartId);
