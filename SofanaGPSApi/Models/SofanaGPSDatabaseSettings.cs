@@ -1,6 +1,9 @@
 ﻿namespace SofanaGPSApi.Models
 {
-    //SofanaGPS' Database Model to pass database credentials implements an Interface of SofanaGPS database settings
+    /// <summary>
+    /// SofanaGPS' Database Model to pass database credentials
+    /// implements an Interface of SofanaGPS database settings
+    /// </summary>
     public class SofanaGPSDatabaseSettings : ISofanaGPSDatabaseSettings
     {
         
@@ -11,7 +14,9 @@
         
     }
 
-    //SofanaGPS' interface for database settings
+    /// <summary>
+    /// SofanaGPS' interface for database settings
+    /// </summary>
     public interface ISofanaGPSDatabaseSettings
     {
         string SofanaGPSCollectionName { get; set; }

@@ -7,12 +7,15 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace SofanaGPSApi.Models
 {
+    /// <summary>
+    /// Model Entity for User
+    /// </summary>
     public class User
     {
         [BsonId] //Donoates primary key
         [BsonRepresentation(BsonType.ObjectId)] // Converts to string for parameters
         
-        //Properties & getter & setters
+        //Properties w/ getter & setters
         public string Id { get; set; } 
 
         [BsonElement("username")]

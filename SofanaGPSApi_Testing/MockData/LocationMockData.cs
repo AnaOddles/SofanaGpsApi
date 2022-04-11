@@ -3,8 +3,15 @@ using SofanaGPSApi.Models;
 
 namespace SofanaGPSApi_Testing
 {
+    /// <summary>
+    /// Mock Data for integration testing Location modules
+    /// </summary>
     public class LocationMockData
     {
+        /// <summary>
+        /// Mock data for Get() endpoint
+        /// </summary>
+        /// <returns>List<Location></returns>
         public static List<Location> GetLocations()
         {
             return new List<Location> {
@@ -25,11 +32,20 @@ namespace SofanaGPSApi_Testing
             };
         }
 
+        /// <summary>
+        /// Mock data for Get() endpoint on empty response
+        /// </summary>
+        /// <returns>List<Location></returns>
         public static List<Location> GetEmptyLocations()
         {
             return new List<Location>();
         }
 
+        /// <summary>
+        /// Mock data for the GetAllWithCartId() endpoint
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns>List<Location></returns>
         public static List<Location> GetAllWithCartId(int cartId)
         {
             return new List<Location> {
@@ -53,6 +69,11 @@ namespace SofanaGPSApi_Testing
 
         }
 
+        /// <summary>
+        /// Mock data for the Get(string id) endpoint
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>List<Location></returns>
         public static List<Location> Get(string id)
         {
             return new List<Location> {
@@ -67,6 +88,10 @@ namespace SofanaGPSApi_Testing
             };
         }
 
+        /// <summary>
+        /// Mock data for the Craete() endpoint
+        /// </summary>
+        /// <returns>Location</returns>
         public static Location NewLocation()
         {
             return new Location
