@@ -105,7 +105,7 @@ namespace SofanaGPSApi.Controllers
                 _logger.LogInformation("/location/ - adding location - {0}", jsonObject);
             }
             await _locationService.Create(location);
-            return Ok(CreatedAtRoute("GetLocation", new { id = location.Id.ToString() }, location)));
+            return Ok(CreatedAtRoute("GetLocation", new { id = location.Id.ToString() }, location));
         }
 
         //Passes location information with location id to the location service to update the specified location information
