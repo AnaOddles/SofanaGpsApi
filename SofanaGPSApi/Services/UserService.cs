@@ -8,7 +8,7 @@ namespace SofanaGPSApi.Services
     /// <summary>
     /// User Service class utilized for api authentication
     /// </summary>
-    public class UserService
+    public class UserService : IUserService
     {
         public readonly IMongoCollection<User> _users;
 

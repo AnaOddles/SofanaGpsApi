@@ -33,7 +33,7 @@ namespace SofanaGPSApi
             services.AddSingleton<ILocationService, LocationService>();
 
             //Registered UserService as a singleton
-            services.AddSingleton<UserService>();
+            services.AddSingleton<IUserService, UserService>();
 
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.UseMemberCasing());
