@@ -15,7 +15,7 @@ namespace SofanaGPSApi.AuthAttribute
     public class BasicAuthorizeFilter : IAuthorizationFilter
     {
         //Inject our user service 
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private readonly ILogger<BasicAuthAttribute> _logger;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace SofanaGPSApi.AuthAttribute
         /// </summary>
         /// <param name="userService"></param>
         /// <param name="logger"></param>
-        public BasicAuthorizeFilter(UserService userService, ILogger<BasicAuthAttribute> logger)
+        public BasicAuthorizeFilter(IUserService userService, ILogger<BasicAuthAttribute> logger)
         {
             _userService = userService;
             _logger = logger;
